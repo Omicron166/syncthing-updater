@@ -11,6 +11,15 @@ import shutil
 with open("config.json") as f:
     config = json.load(f)
 
+# Check write access to bin_path
+try:
+    if os.path.isfile(config["bin_path"]):
+        assert os.access(config["bin_path"], os.W_OK)
+    else:
+        assert os.access(os.path.dirname(config["bin_path"]), os.W_OK)
+except AssertionError:
+    print("File cannot be written")
+
 upgrade_data = requests.get(config["upgrade_url"]).json()[0]
 
 installed_version = version.parse(os.popen("syncthing version").read().split()[1])
