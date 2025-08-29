@@ -6,9 +6,22 @@ from sys import exit
 from tqdm import tqdm
 import tarfile
 import shutil
+import argparse
+
+# Start the argparser
+parser = argparse.ArgumentParser(
+    prog="syncthing updater",
+    description="A script for syncthing v2 that mimics the syncthing v1 auto upgrade from cli"
+)
+
+parser.add_argument("-c", "--config", help="Path to the json config file", default="config.json")
+parser.add_argument("--force", action="store_true", help="Replace the binary without checking the version")
+parser.add_argument("--dry-run", action="store_true", dest="dry", help="Do not replace the binary")
+
+args = parser.parse_args()
 
 # Load config
-with open("config.json") as f:
+with open(args.config) as f:
     config = json.load(f)
 
 # Check write access to bin_path
@@ -24,15 +37,17 @@ except AssertionError:
 upgrade_data = requests.get(config["upgrade_url"]).json()[0]
 latest_version = version.parse(upgrade_data["tag_name"])
 
-# Get installed version (will crash on syncthing v1.x)
-installed_version = version.parse(os.popen("syncthing version").read().split()[1])
+if args.force:
+    print(f"Force upgrade to {latest_version}, skipping version check")
+else:
+    # Get installed version (will crash on syncthing v1.x)
+    installed_version = version.parse(os.popen("syncthing version").read().split()[1])
 
+    if not installed_version < latest_version:
+        print(f"Latest version already installed: v{latest_version}")
+        exit()
 
-if not installed_version < latest_version:
-    print(f"Latest version already installed: v{latest_version}")
-    exit()
-
-print(f"Upgrade available {installed_version} -> {latest_version}")
+    print(f"Upgrade available {installed_version} -> {latest_version}")
 
 # Make sure "downloads" is clean before starting
 if os.path.exists("downloads"): shutil.rmtree("downloads")
@@ -73,8 +88,11 @@ folder_name = file_name.removesuffix(".tar.gz")
 
 print("Upgrading syncthing")
 
-# Replace the binary and delete "downloads"
-shutil.move(f"downloads/{folder_name}/syncthing", config["bin_path"])
+if args.dry:
+    print("Dry run, skipping binary replacement")
+else:
+    # Replace the binary and delete "downloads"
+    shutil.move(f"downloads/{folder_name}/syncthing", config["bin_path"])
 
 print("Syncthing upgraded. Cleaning")
 
