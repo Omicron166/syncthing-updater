@@ -20,10 +20,12 @@ try:
 except AssertionError:
     print("File cannot be written")
 
+# Fetch latest available version
 upgrade_data = requests.get(config["upgrade_url"]).json()[0]
-
-installed_version = version.parse(os.popen("syncthing version").read().split()[1])
 latest_version = version.parse(upgrade_data["tag_name"])
+
+# Get installed version (will crash on syncthing v1.x)
+installed_version = version.parse(os.popen("syncthing version").read().split()[1])
 
 
 if not installed_version < latest_version:
@@ -32,15 +34,18 @@ if not installed_version < latest_version:
 
 print(f"Upgrade available {installed_version} -> {latest_version}")
 
+# Make sure "downloads" is clean before starting
 if os.path.exists("downloads"): shutil.rmtree("downloads")
 os.mkdir("downloads")
 
+# Find the right download link
 for asset in upgrade_data["assets"]:
     if config["architecture"] in asset["name"]:
         download_url = asset["url"]
 
 file_name = asset["url"].split("/").pop()
 
+# Download the tar.gz with the syncthing binary
 with requests.get(download_url, stream=True) as r:
     r.raise_for_status()
 
@@ -60,6 +65,7 @@ with requests.get(download_url, stream=True) as r:
 
 print("Download completed. Extracting")
 
+# Extract the downloaded tar.gz
 with tarfile.open(f"downloads/{file_name}", "r:gz") as tar:
     tar.extractall("downloads")
 
@@ -67,6 +73,7 @@ folder_name = file_name.removesuffix(".tar.gz")
 
 print("Upgrading syncthing")
 
+# Replace the binary and delete "downloads"
 shutil.move(f"downloads/{folder_name}/syncthing", config["bin_path"])
 
 print("Syncthing upgraded. Cleaning")
