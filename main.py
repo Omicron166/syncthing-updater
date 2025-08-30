@@ -43,7 +43,7 @@ if args.force:
     print(f"Force upgrade to {latest_version}, skipping version check")
 else:
     # Get installed version (will crash on syncthing v1.x)
-    installed_version = version.parse(os.popen("syncthing version").read().split()[1])
+    installed_version = version.parse(os.popen(config["bin_path"] + " version").read().split()[1])
 
     if not installed_version < latest_version:
         print(f"Latest version already installed: v{latest_version}")
