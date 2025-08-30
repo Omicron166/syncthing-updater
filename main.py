@@ -3,7 +3,6 @@ import os
 import json
 from packaging import version
 from sys import exit
-from tqdm import tqdm
 import tarfile
 import shutil
 import argparse
@@ -17,6 +16,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument("-c", "--config", help="Path to the json config file", default="config.json")
 parser.add_argument("--force", action="store_true", help="Replace the binary without checking the version")
 parser.add_argument("--dry-run", action="store_true", dest="dry", help="Do not replace the binary")
+parser.add_argument("--no-download-progress", action="store_false", dest="progress", help="Disable the download progress bar, tqdm is not required if this option is used")
 
 args = parser.parse_args()
 
@@ -63,22 +63,45 @@ for asset in upgrade_data["assets"]:
 file_name = asset["url"].split("/").pop()
 
 # Download the tar.gz with the syncthing binary
-with requests.get(download_url, stream=True) as r:
-    r.raise_for_status()
+try:
+    if args.progress:
+        # Check that tqdm is installed
+        try:
+            from tqdm import tqdm
+        except:
+            print("Optional dependency tqdm is missing, use --no-download-progress to avoid it")
+            exit()
 
-    total = int(r.headers.get("content-length", 0))
+        # Actual download
+        with requests.get(download_url, stream=True) as r:
+            r.raise_for_status()
 
-    with open(f"downloads/{file_name}", "wb") as f, tqdm(
-        desc=file_name,
-        total=total,
-        unit="B",
-        unit_scale=True,
-        unit_divisor=1024,
-    ) as bar:
-        for chunk in r.iter_content(chunk_size=8192):
-            if chunk:
-                f.write(chunk)
-                bar.update(len(chunk))
+            total = int(r.headers.get("content-length", 0))
+
+            with open(f"downloads/{file_name}", "wb") as f, tqdm(
+                desc=file_name,
+                total=total,
+                unit="B",
+                unit_scale=True,
+                unit_divisor=1024,
+            ) as bar:
+                for chunk in r.iter_content(chunk_size=8192):
+                    if chunk:
+                        f.write(chunk)
+                        bar.update(len(chunk))
+    else:
+        # Just download
+        print("Downloading...")
+        with requests.get(download_url, stream=True) as r:
+            r.raise_for_status()
+
+            with open(f"downloads/{file_name}", "wb") as f:
+                for chunk in r.iter_content(chunk_size=8192):
+                    if chunk:
+                        f.write(chunk)
+except:
+    print("Download error")
+    exit()
 
 print("Download completed. Extracting")
 
