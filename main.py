@@ -116,7 +116,11 @@ if args.dry:
     print("Dry run, skipping binary replacement")
 else:
     # Replace the binary and delete "downloads"
-    shutil.move(f"downloads/{folder_name}/syncthing", config["bin_path"])
+    try:
+        shutil.move(f"downloads/{folder_name}/syncthing", config["bin_path"])
+    except:
+        print("Upgrade error, make sure syncthing is not running.")
+        exit()
 
 print("Syncthing upgraded. Cleaning")
 
