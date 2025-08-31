@@ -5,7 +5,7 @@ Syncthing v2.x auto upgrade requires the syncthing service to be able to write t
 
 This script is a replacement for the old auto upgrade on syncthing v2.x.
 # Installation
-This script requires `requests` and `packaging` to work. Additionally, you can install `tqdm` to have a download progress bar (or avoid it using `--no-download-progress`)
+This script requires `requests` and `packaging` to work. Additionally, you can install `tqdm` to have a download progress bar (or avoid it using `--no-tqdm`)
 
 You can either install the dependencies on a virtual enviroment or install them as `python3-requests python3-packaging python3-tqdm` on ubuntu (probably debian) based distros.
 
@@ -18,10 +18,10 @@ The available options are very straightforward.
 You can either copy and fill `config_sample.json` or run the interactive config generator `gen-config.py`.
 # Usage
 ```
-$python3 main.py -h
-usage: syncthing updater [-h] [-c CONFIG] [--force] [--dry-run] [--no-download-progress]
+$ python3 main.py -h
+usage: main.py [-h] [-c CONFIG] [--force] [--dry-run] [--no-tqdm]
 
-A script for syncthing v2 that mimics the syncthing v1 auto upgrade from cli
+A script for syncthing v2.x that mimics the syncthing v1.x auto upgrade from cli
 
 options:
   -h, --help            show this help message and exit
@@ -29,8 +29,7 @@ options:
                         Path to the json config file
   --force               Replace the binary without checking the version
   --dry-run             Do not replace the binary
-  --no-download-progress
-                        Disable the download progress bar, tqdm is not required if this option is used
+  --no-tqdm             Disable the download progress bar, tqdm is not required if this option is used
 ```
 # Install and or update v1.x syncthing
 By using the `--force` option, you can install syncthing or update syncthing from v1.x to v2.x. If you try to update syncthing v1.x without this option, the script will crash.
