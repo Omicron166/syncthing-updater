@@ -62,16 +62,19 @@ for asset in upgrade_data["assets"]:
         file_name = asset["url"].split("/").pop()
 
 # Download the tar.gz with the syncthing binary
+
+# Check that tqdm is installed
+if args.progress:
+    try:
+        from tqdm import tqdm
+    except:
+        print("Optional dependency tqdm is missing, use --no-tqdm to hide this message")
+        args.progress = False
+
+# Actual download
 try:
     if args.progress:
-        # Check that tqdm is installed
-        try:
-            from tqdm import tqdm
-        except:
-            print("Optional dependency tqdm is missing, use --no-download-progress to avoid it")
-            exit()
-
-        # Actual download
+        # Tqdm version
         with requests.get(download_url, stream=True) as r:
             r.raise_for_status()
 
@@ -89,7 +92,7 @@ try:
                         f.write(chunk)
                         bar.update(len(chunk))
     else:
-        # Just download
+        # No tqdm version
         print("Downloading...")
         with requests.get(download_url, stream=True) as r:
             r.raise_for_status()
