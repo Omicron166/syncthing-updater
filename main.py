@@ -59,8 +59,7 @@ os.mkdir("downloads")
 for asset in upgrade_data["assets"]:
     if config["architecture"] in asset["name"]:
         download_url = asset["url"]
-
-file_name = asset["url"].split("/").pop()
+        file_name = asset["url"].split("/").pop()
 
 # Download the tar.gz with the syncthing binary
 try:
