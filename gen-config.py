@@ -15,6 +15,11 @@ if upgrade_url:
 
 config["architecture"] = input("Enter device architecture (e.g. syncthing-linux-amd64): ")
 
+if input("Do you want to download prereleases? (yes/no, default: no): ").lower() in "yes":
+    config["download_prereleases"] = True
+else
+    config["download_prereleases"] = False
+
 print("Writing generated configuration to config.json")
 
 with open("config.json", "w") as f:
