@@ -36,7 +36,14 @@ except AssertionError:
     print("File cannot be written")
 
 # Fetch latest available version
-upgrade_data = requests.get(config["upgrade_url"]).json()[0]
+
+for upgrade in requests.get(config["upgrade_url"]).json():
+    if upgrade["prerelease"]: continue
+    upgrade_data = upgrade
+    break
+# I should also add a check to avoid selecting a 1.x upgrade
+# maybe later
+
 latest_version = version.parse(upgrade_data["tag_name"])
 
 if args.force:
