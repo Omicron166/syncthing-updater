@@ -3,11 +3,21 @@ Syncthing v1.x has `syncthing serve -u`, which upgrades the binary without loadi
 
 Syncthing v2.x auto upgrade requires the syncthing service to be able to write the binary. If you have syncthing in `/usr/bin/` you either have to boot the syncthing server as root or manually replace the binary.
 
-This script is a replacement for the old auto upgrade on syncthing v2.x.
+This script brings back the old auto upgrade to syncthing v2.x.
 # Installation
+### Getting the code
+Download the [ZIP with the latest changes](https://github.com/Omicron166/syncthing-updater/archive/refs/heads/master.zip) and unzip it
+
+or
+
+(recommended) Clone the repo with git:
+```
+git clone https://github.com/Omicron166/syncthing-updater.git
+```
+### Installing dependencies
 This script requires `requests` and `packaging` to work. Additionally, you can install `tqdm` to have a download progress bar (or avoid it using `--no-tqdm`)
 
-You can either install the dependencies on a virtual enviroment or install them as `python3-requests python3-packaging python3-tqdm` on ubuntu (probably debian) based distros.
+You can either install the dependencies on a virtual enviroment or install them as `python3-requests python3-packaging python3-tqdm` on debian based distros.
 
 # Configuration
 The available options are very straightforward.
@@ -31,5 +41,8 @@ options:
   --dry-run             Do not replace the binary
   --no-tqdm             Disable the download progress bar, tqdm is not required if this option is used
 ```
-# Install and or update v1.x syncthing
+# Install syncthing or update from v1.x
 By using the `--force` option, you can install syncthing or update syncthing from v1.x to v2.x. If you try to update syncthing v1.x without this option, the script will crash.
+# Tested systems
+- Raspberry Pi OS 64 bit (raspberry pi 3b)
+- Linux Mint 21.3 (x86_64 PC)
