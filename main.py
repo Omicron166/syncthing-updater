@@ -39,10 +39,10 @@ except AssertionError:
 
 for upgrade in requests.get(config["upgrade_url"]).json():
     if upgrade["prerelease"]: continue
+    ver = version.parse(upgrade["tag_name"])
+    if ver < version.parse("v2.0.0"): continue
     upgrade_data = upgrade
     break
-# I should also add a check to avoid selecting a 1.x upgrade
-# maybe later
 
 latest_version = version.parse(upgrade_data["tag_name"])
 

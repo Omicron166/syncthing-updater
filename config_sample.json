@@ -1,5 +1,6 @@
 {
     "bin_path": "/usr/bin/syncthing",
     "upgrade_url": "https://upgrades.syncthing.net/meta.json",
-    "architecture": "syncthing-linux-amd64"
+    "architecture": "syncthing-linux-amd64",
+    "download_prereleases": false
 }
