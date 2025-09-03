@@ -5,6 +5,9 @@ Syncthing v2.x auto upgrade requires the syncthing service to be able to write t
 
 This script brings back the old auto upgrade to syncthing v2.x.
 # Installation
+### For windows users
+Just use [GermanCoding's synctrayzor](https://github.com/GermanCoding/SyncTrayzor). Trust me, it's much better than having that ugly terminal open.
+Also, this script will crash when trying to extract the .zip with the .tar.gz method.
 ### Getting the code
 Download the [ZIP with the latest changes](https://github.com/Omicron166/syncthing-updater/archive/refs/heads/master.zip) and unzip it
 
@@ -42,7 +45,7 @@ options:
   --no-tqdm             Disable the download progress bar, tqdm is not required if this option is used
 ```
 # Install syncthing or update from v1.x
-By using the `--force` option, you can install syncthing or update syncthing from v1.x to v2.x. If you try to update syncthing v1.x without this option, the script will crash.
+By using the `--force` option, you can install syncthing, reinstall it if you forgot to change the settings and got the amd64 version on a raspberry pi or update syncthing from v1.x to v2.x. If you try to update syncthing v1.x without this option, the script will crash.
 # Tested systems
 - Raspberry Pi OS 64 bit (raspberry pi 3b)
 - Linux Mint 21.3 (x86_64 PC)
