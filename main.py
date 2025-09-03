@@ -33,7 +33,8 @@ try:
         print("Binary does not exist on the configured path, use --force to install it")
         exit()
 except AssertionError:
-    print("File cannot be written")
+    print("File cannot be written, run again as privileged user")
+    exit()
 
 # Fetch latest available version
 
