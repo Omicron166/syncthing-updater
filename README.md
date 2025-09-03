@@ -26,7 +26,7 @@ You can either install the dependencies on a virtual enviroment or install them 
 The available options are very straightforward.
 - `bin_path` is the path to the syncthing binary.
 - `upgrade_url` is the url of the syncthing upgrade server, don't change it unless you know what you're doing.
-- `architecture` is the version of syncthing to download. It works by getting the first version that has the text in this field, so if you have a linux pc either `syncthing-linux-amd64` and `linux-amd64` will work.
+- `architecture` is the version of syncthing to download. Run `list-architectures.py` and select yours.
 
 You can either copy and fill `config_sample.json` or run the interactive config generator `gen-config.py`.
 # Usage
