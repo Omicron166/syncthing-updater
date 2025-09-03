@@ -6,6 +6,7 @@ from sys import exit
 import tarfile
 import shutil
 import argparse
+from core import downloader
 
 # Start the argparser
 parser = argparse.ArgumentParser(
@@ -83,32 +84,11 @@ if args.progress:
 try:
     if args.progress:
         # Tqdm version
-        with requests.get(download_url, stream=True) as r:
-            r.raise_for_status()
-
-            total = int(r.headers.get("content-length", 0))
-
-            with open(f"downloads/{file_name}", "wb") as f, tqdm(
-                desc=file_name,
-                total=total,
-                unit="B",
-                unit_scale=True,
-                unit_divisor=1024,
-            ) as bar:
-                for chunk in r.iter_content(chunk_size=8192):
-                    if chunk:
-                        f.write(chunk)
-                        bar.update(len(chunk))
+        downloader.progressbar_download(download_url, "downloads", file_name) # Making the download path an option would be nice
     else:
         # No tqdm version
         print("Downloading...")
-        with requests.get(download_url, stream=True) as r:
-            r.raise_for_status()
-
-            with open(f"downloads/{file_name}", "wb") as f:
-                for chunk in r.iter_content(chunk_size=8192):
-                    if chunk:
-                        f.write(chunk)
+        downloader.download(download_url, "downloads", file_name)
 except:
     print("Download error")
     exit()
