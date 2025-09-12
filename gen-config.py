@@ -17,7 +17,7 @@ config["architecture"] = input("Enter device architecture (e.g. syncthing-linux-
 
 if input("Do you want to download prereleases? (yes/no, default: no): ").lower() in "yes":
     config["download_prereleases"] = True
-else
+else:
     config["download_prereleases"] = False
 
 print("Writing generated configuration to config.json")
