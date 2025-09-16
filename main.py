@@ -60,9 +60,13 @@ else:
 
     print(f"Upgrade available {installed_version} -> {latest_version}")
 
-# Make sure "downloads" is clean before starting
-if os.path.exists("downloads"): shutil.rmtree("downloads")
-os.mkdir("downloads")
+# Make sure the download dir is clean before starting
+if os.path.exists(config["download_path"]) and config["donload_cleaning"]: shutil.rmtree(config["download_path"])
+
+try:
+    os.mkdir(config["download_path"])
+except FileExistsError:
+    pass
 
 # Find the right download link
 for asset in upgrade_data["assets"]:
@@ -84,11 +88,11 @@ if args.progress:
 try:
     if args.progress:
         # Tqdm version
-        downloader.progressbar_download(download_url, "downloads", file_name) # Making the download path an option would be nice
+        downloader.progressbar_download(download_url, config["download_path"], file_name) # Making the download path an option would be nice
     else:
         # No tqdm version
         print("Downloading...")
-        downloader.download(download_url, "downloads", file_name)
+        downloader.download(download_url, config["download_path"], file_name)
 except:
     print("Download error")
     exit()
@@ -96,8 +100,8 @@ except:
 print("Download completed. Extracting")
 
 # Extract the downloaded tar.gz
-with tarfile.open(f"downloads/{file_name}", "r:gz") as tar:
-    tar.extractall("downloads")
+with tarfile.open(f"{config["download_path"]}/{file_name}", "r:gz") as tar:
+    tar.extractall(config["download_path"])
 
 folder_name = file_name.removesuffix(".tar.gz")
 
@@ -106,13 +110,14 @@ print("Upgrading syncthing")
 if args.dry:
     print("Dry run, skipping binary replacement")
 else:
-    # Replace the binary and delete "downloads"
+    # Replace the binary and clean the download dir
     try:
-        shutil.move(f"downloads/{folder_name}/syncthing", config["bin_path"])
+        shutil.move(f"{config["download_path"]}/{folder_name}/syncthing", config["bin_path"])
     except:
         print("Upgrade error, make sure syncthing is not running.")
         exit()
 
-print("Syncthing upgraded. Cleaning")
-
-shutil.rmtree("downloads")
+print("Syncthing upgraded.")
+if config["download_cleaning"]:
+    print("Cleaning.")
+    shutil.rmtree(config["download_path"])

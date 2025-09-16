@@ -20,6 +20,14 @@ if input("Do you want to download prereleases? (yes/no, default: no): ").lower()
 else:
     config["download_prereleases"] = False
 
+config["download_path"] = input("Enter the temporal downloads path (leave blank to use the default): ")
+if not config["download_path"]: config["download_path"] = "downloads"
+
+if input("Do you want to automatically clean the downloads folder? (yes/no, default: no): ").lower() in "yes":
+    config["download_cleaning"] = True
+else:
+    config["download_cleaning"] = False
+
 print("Writing generated configuration to config.json")
 
 with open("config.json", "w") as f:
