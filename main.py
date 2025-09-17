@@ -100,7 +100,7 @@ except:
 print("Download completed. Extracting")
 
 # Extract the downloaded tar.gz
-with tarfile.open(f"{config["download_path"]}/{file_name}", "r:gz") as tar:
+with tarfile.open(config["download_path"]+ f"/{file_name}", "r:gz") as tar:
     tar.extractall(config["download_path"])
 
 folder_name = file_name.removesuffix(".tar.gz")
@@ -112,7 +112,7 @@ if args.dry:
 else:
     # Replace the binary and clean the download dir
     try:
-        shutil.move(f"{config["download_path"]}/{folder_name}/syncthing", config["bin_path"])
+        shutil.move(config["download_path"] + f"/{folder_name}/syncthing", config["bin_path"])
     except:
         print("Upgrade error, make sure syncthing is not running.")
         exit()
