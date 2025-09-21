@@ -6,14 +6,14 @@ Syncthing v2.x auto upgrade requires the syncthing service to be able to write t
 This script brings back the old auto upgrade to syncthing v2.x.
 # Installation
 ### For windows users
-Just use [GermanCoding's synctrayzor](https://github.com/GermanCoding/SyncTrayzor). Trust me, it's much better than having that ugly terminal open.
-Also, this script will crash when trying to extract the .zip with the .tar.gz method.
+This script right now does not (and probably will never) support the `.zip` files used to distribute windows binaries of syncthing.
+> Just use [GermanCoding's synctrayzor](https://github.com/GermanCoding/SyncTrayzor).
 ### Getting the code
 Download the [ZIP with the latest changes](https://github.com/Omicron166/syncthing-updater/archive/refs/heads/master.zip) and unzip it
 
 or
 
-(recommended) Clone the repo with git:
+Clone the repo with git:
 ```
 git clone https://github.com/Omicron166/syncthing-updater.git
 ```
@@ -27,6 +27,9 @@ The available options are very straightforward.
 - `bin_path` is the path to the syncthing binary.
 - `upgrade_url` is the url of the syncthing upgrade server, don't change it unless you know what you're doing.
 - `architecture` is the version of syncthing to download. Run `list-architectures.py` and select yours.
+- `download_prereleases` indicates if you want to download syncthing prereleases (true) or just the stable releases (false)
+- `download_path` is the path where temporal files will be stored.
+- `download_cleaning` indicates if you want to remove (true) or keep (false) the temporal files after upgrading syncthing.
 
 You can either copy and fill `config_sample.json` or run the interactive config generator `gen-config.py`.
 # Usage
@@ -39,7 +42,7 @@ A script for syncthing v2.x that mimics the syncthing v1.x auto upgrade from cli
 options:
   -h, --help            show this help message and exit
   -c CONFIG, --config CONFIG
-                        Path to the json config file
+                        Path to the json config file (config.json by default)
   --force               Replace the binary without checking the version
   --dry-run             Do not replace the binary
   --no-tqdm             Disable the download progress bar, tqdm is not required if this option is used

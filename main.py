@@ -14,7 +14,7 @@ parser = argparse.ArgumentParser(
     description="A script for syncthing v2.x that mimics the syncthing v1.x auto upgrade from cli"
 )
 
-parser.add_argument("-c", "--config", help="Path to the json config file", default="config.json")
+parser.add_argument("-c", "--config", help="Path to the json config file (config.json by default)", default="config.json")
 parser.add_argument("--force", action="store_true", help="Replace the binary without checking the version")
 parser.add_argument("--dry-run", action="store_true", dest="dry", help="Do not replace the binary")
 parser.add_argument("--no-tqdm", action="store_false", dest="progress", help="Disable the download progress bar, tqdm is not required if this option is used")
