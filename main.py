@@ -61,7 +61,7 @@ else:
     print(f"Upgrade available {installed_version} -> {latest_version}")
 
 # Make sure the download dir is clean before starting
-if os.path.exists(config["download_path"]) and config["donload_cleaning"]: shutil.rmtree(config["download_path"])
+if os.path.exists(config["download_path"]) and config["download_cleaning"]: shutil.rmtree(config["download_path"])
 
 try:
     os.mkdir(config["download_path"])
