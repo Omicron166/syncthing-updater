@@ -31,8 +31,9 @@ try:
         assert os.access(config["bin_path"], os.W_OK)
     else:
         assert os.access(os.path.dirname(config["bin_path"]), os.W_OK)
-        print("Binary does not exist on the configured path, use --force to install it")
-        exit()
+        if not args.force: # Do not exit if already running with --force
+            print("Binary does not exist on the configured path, use --force to install it")
+            exit()
 except AssertionError:
     print("File cannot be written, run again as privileged user")
     exit()
