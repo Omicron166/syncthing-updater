@@ -52,3 +52,7 @@ By using the `--force` option, you can install syncthing, reinstall it if you fo
 # Tested systems
 - Raspberry Pi OS 64 bit (raspberry pi 3b)
 - Linux Mint 21.3 (x86_64 PC)
+# License
+
+This project is licensed under the GNU General Public License v3.0.
+
