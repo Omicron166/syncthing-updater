@@ -41,7 +41,7 @@ except AssertionError:
 # Fetch latest available version
 
 for upgrade in requests.get(config["upgrade_url"]).json():
-    if upgrade["prerelease"] and not config["download_prerelease"]: continue
+    if upgrade["prerelease"] and not config["download_prereleases"]: continue
     ver = version.parse(upgrade["tag_name"])
     if ver < version.parse("v2.0.0"): continue
     upgrade_data = upgrade
